@@ -18,4 +18,4 @@ def ksi(x, y):
 if __name__ == '__main__':
     print("Hello")
     # task3(32, 0.0001)
-    task(32, f=f, phi=phi, ksi=ksi, filename='resources/явныйМетодТест')
+    task(14, f=f, phi=phi, ksi=ksi, filename='resources/явныйМетодТест')

@@ -5,24 +5,21 @@ from matplotlib.animation import FuncAnimation
 ht = 0.1
 hx = 0.1
 hy = 0.1
-a = 4
-b = 4
+a = 2
+b = 2
 
 
-#########################
-#                       #
-# Вероятно неправильный #
-#      явный метод      #
-#                       #
-#########################
-
-
-def scheme(u0, u1, f, t):
-    u2 = 2 * u1 - u0
+def scheme(u0, u1, f, k):
+    C1 = hx**2 * hy**2
+    C2 = -ht**2 * hy**2
+    C3 = -ht**2 * hx**2
+    C4 = ht**2 * hx**2 * hy**2
+    C0 = -2*(C1 + C2 + C3)
+    u2 = np.zeros(u0.shape)
     for i in range(1, u2.shape[0]-1):
         for j in range(1, u2.shape[1]-1):
-            u2[i][j] += ht ** 2 * ((u1[i + 1][j] - 2 * u1[i][j] + u1[i - 1][j]) / hx ** 2 + (
-                        u1[i][j + 1] - 2 * u1[i][j] + u1[i][j - 1]) / hy ** 2 + f(i * hx, j * hy, t))
+            u2[i][j] = -u0[i][j] - ( C0*u1[i][j] + C2*(u1[i+1][j] + u1[i-1][j]) +
+                                     C3*(u1[i][j+1] + u1[i][j-1]) - C4*f(j*hx, i*hy, (k-1)*ht) )/C1
     return u2
 
 
@@ -57,16 +54,15 @@ def task(n, f, phi, ksi, filename):
     u1 = np.zeros((n + 1, n + 1))
     for i in range(1, n):
         for j in range(1, n):
-            u0[i][j] = phi(i * hx, j * hy)
-            u1[i][j] = 2 * ht * ksi(i * hx, j * hy) + u0[i][j]
-    t = 0.1
+            u0[i][j] = phi(j * hx, i * hy)
+            u1[i][j] = 2 * ht * ksi(j * hx, i * hy) + u0[i][j]
 
     zarray = np.zeros((n + 1, n + 1, frn))
-
-    for i in range(frn):
-        t += ht
-        u2 = scheme(u0, u1, f, t)
-        zarray[:, :, i] = u2
+    zarray[:, :, 0] = u0
+    zarray[:, :, 1] = u1
+    for k in range(2, frn):
+        u2 = scheme(u0, u1, f, k)
+        zarray[:, :, k] = u2
         u0 = u1
         u1 = u2
 
