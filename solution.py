@@ -36,17 +36,21 @@ def show_plot(u_numeric):
     return 0
 
 
-def task(n, f, phi, ksi, filename):
+def task(n, f, phi, ksi, filename, _a=2, _b=2):
     fps = 10  # frame per sec
     frn = 62  # frame number of the animation
+    global hx, hy, ht, a, b
+    a = _a
+    b = _b
 
     def update_plot(frame_number, zarray, plot):
         plot[0].remove()
         plot[0] = ax.plot_surface(x, y, zarray[:, :, frame_number], cmap="magma")
 
-    x = np.linspace(0, 2, n + 1, endpoint=True)
-    x, y = np.meshgrid(x, x)
-    global hx, hy, ht
+    x = np.linspace(0, a, n + 1, endpoint=True)
+    y = np.linspace(0, b, n + 1, endpoint=True)
+    x, y = np.meshgrid(x, y)
+
     hx = a / n
     hy = b / n
     ht = 0.1
