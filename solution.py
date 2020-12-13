@@ -8,12 +8,6 @@ hy = 0.1
 a = 2
 b = 2
 
-#########################
-#                       #
-# Вероятно неправильный #
-#      явный метод      #
-#                       #
-#########################
 
 def scheme(u0, u1, f, k):
     C1 = hx**2 * hy**2
@@ -87,5 +81,65 @@ def task(n, f, phi, ksi, filename, _a=2, _b=2):
     plot = [ax.plot_surface(x, y, zarray[:, :, 0], color='0.75', rstride=1, cstride=1)]
     ax.set_zlim(0, 2)
     ani = FuncAnimation(fig, update_plot, frn, fargs=(zarray, plot), interval=1000 / fps)
+    ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
+    ani.save(filename + '.gif', writer='imagemagick', fps=fps)
+
+
+def check_error(n, f, phi, ksi, filename, _a=2, _b=2):
+    def lambd(n, m):
+        return np.pi ** 2 * (n * n + m * m) / 4
+    def my_u(x, y, t):
+        return phi(x, y) * np.cos(np.sqrt(lambd(1, 2)) * t)
+    fps = 10  # frame per sec
+    frn = 62  # frame number of the animation
+    global hx, hy, ht, a, b
+    a = _a
+    b = _b
+
+    def update_plot(frame_number, zarray, plot):
+        plot[0].remove()
+        plot[0] = ax.plot_surface(x, y, zarray[:, :, frame_number], cmap="magma")
+
+    x = np.linspace(0, a, n + 1, endpoint=True)
+    y = np.linspace(0, b, n + 1, endpoint=True)
+    x, y = np.meshgrid(x, y)
+
+    hx = a / n
+    hy = b / n
+    ht = 0.1
+    u0 = np.zeros((n + 1, n + 1))
+    u1 = np.zeros((n + 1, n + 1))
+    for i in range(1, n):
+        for j in range(1, n):
+            u0[i][j] = phi(j * hx, i * hy)
+            u1[i][j] = ht * ksi(j * hx, i * hy) + u0[i][j]
+
+    zarray = np.zeros((n + 1, n + 1, frn))
+    for i in range(1, n):
+        for j in range(1, n):
+            zarray[i, j, 0] = u0[i][j] - my_u(j * hx, i * hy, 0)
+            zarray[i, j, 1] = u1[i][j] - my_u(j * hx, i * hy, ht)
+    print("Начальные условия готовы")
+    for k in range(2, frn):
+        u2 = scheme(u0, u1, f, k)
+        for i in range(1, n):
+            for j in range(1, n):
+                zarray[i, j, k] = u2[i][j] - my_u(j * hx, i * hy, k*ht)
+        u0 = u1
+        u1 = u2
+
+    box_1 = {'facecolor': 'white',  # цвет области
+             'edgecolor': 'black',  # цвет крайней линии
+             'boxstyle': 'round'}
+
+    print("Создание графика")
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.text(0, 0, 11, s='t = [0, 6)')
+
+    plot = [ax.plot_surface(x, y, zarray[:, :, 0], color='0.75', rstride=1, cstride=1)]
+    ax.set_zlim(0, 1)
+    ani = FuncAnimation(fig, update_plot, frn, fargs=(zarray, plot), interval=1000 / fps)
+    print("Сохранение графика")
     ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
     ani.save(filename + '.gif', writer='imagemagick', fps=fps)

@@ -1,5 +1,5 @@
 import numpy as np
-from solution import task
+from solution import task, check_error
 from task3 import task3
 
 
@@ -19,6 +19,7 @@ def ksi(x, y):
 
 
 if __name__ == '__main__':
-    print("Hello")
+    print("Запуск")
     # task3(32, 0.0001)
-    task(14, f=f, phi=phi, ksi=ksi, filename='resources/явныйМетодТест')
+    # task(14, f=f, phi=phi, ksi=ksi, filename='resources/явныйМетодХмм', _a=2, _b=2)
+    check_error(14, f=f, phi=phi, ksi=ksi, filename='resources/error', _a=2, _b=2)

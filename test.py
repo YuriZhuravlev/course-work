@@ -83,6 +83,6 @@ plot = [ax.plot_surface(x, y, zarray[:, :, 0], color='0.75', rstride=1, cstride=
 ax.set_zlim(0, 2)
 ani = FuncAnimation(fig, update_plot, frn, fargs=(zarray, plot), interval=1000 / fps)
 print(time.time() - time0)
-fn = 'myplotTest'
+fn = 'resources/myplotTest'
 ani.save(fn + '.mp4', writer='ffmpeg', fps=fps)
 ani.save(fn + '.gif', writer='imagemagick', fps=fps)
