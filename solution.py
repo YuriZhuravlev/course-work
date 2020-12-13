@@ -81,7 +81,7 @@ def task(n, f, phi, ksi, filename, _a=2, _b=2):
     plot = [ax.plot_surface(x, y, zarray[:, :, 0], color='0.75', rstride=1, cstride=1)]
     ax.set_zlim(0, 2)
     ani = FuncAnimation(fig, update_plot, frn, fargs=(zarray, plot), interval=1000 / fps)
-    ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
+    # ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
     ani.save(filename + '.gif', writer='imagemagick', fps=fps)
 
 

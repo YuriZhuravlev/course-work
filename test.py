@@ -16,7 +16,7 @@ def phi(x, y):
 
 
 def ff(x, y, t):
-    return np.sin(np.pi * x / 2) * np.sin(np.pi * y) * np.cos(2 * t) * (4 - np.pi ** 2 * 5 / 4)
+    return np.sin(np.pi * x / 2) * np.sin(np.pi * y) * np.cos(2 * t)
 
 
 def lambd(n, m):
