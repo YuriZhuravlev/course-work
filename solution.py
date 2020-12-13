@@ -55,7 +55,7 @@ def task(n, f, phi, ksi, filename):
     for i in range(1, n):
         for j in range(1, n):
             u0[i][j] = phi(j * hx, i * hy)
-            u1[i][j] = 2 * ht * ksi(j * hx, i * hy) + u0[i][j]
+            u1[i][j] = ht * ksi(j * hx, i * hy) + u0[i][j]
 
     zarray = np.zeros((n + 1, n + 1, frn))
     zarray[:, :, 0] = u0
