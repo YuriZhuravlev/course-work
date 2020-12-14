@@ -37,7 +37,7 @@ def show_plot(u_numeric):
 
 
 def task(n, _ht, f, phi, ksi, filename, _a=2, _b=2):
-    fps = 30  # frame per sec
+    fps = 10  # frame per sec
     frn = 120  # frame number of the animation
     global hx, hy, ht, a, b
     a = _a
@@ -89,9 +89,9 @@ def check_error(n, _ht, f, phi, ksi, filename, _a=2, _b=2):
     def lambd(n, m):
         return np.pi ** 2 * (n * n + m * m) / 4
     def my_u(x, y, t):
-        return phi(x, y) * np.cos(2 * t)
-    fps = 30  # frame per sec
-    frn = 240  # frame number of the animation
+        return phi(x, y) * np.cos(3 * t)
+    fps = 10  # frame per sec
+    frn = 120  # frame number of the animation
     global hx, hy, ht, a, b
     a = _a
     b = _b
