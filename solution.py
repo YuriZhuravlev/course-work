@@ -36,12 +36,13 @@ def show_plot(u_numeric):
     return 0
 
 
-def task(n, f, phi, ksi, filename, _a=2, _b=2):
-    fps = 10  # frame per sec
-    frn = 62  # frame number of the animation
+def task(n, _ht, f, phi, ksi, filename, _a=2, _b=2):
+    fps = 30  # frame per sec
+    frn = 120  # frame number of the animation
     global hx, hy, ht, a, b
     a = _a
     b = _b
+    ht = _ht
 
     def update_plot(frame_number, zarray, plot):
         plot[0].remove()
@@ -53,7 +54,6 @@ def task(n, f, phi, ksi, filename, _a=2, _b=2):
 
     hx = a / n
     hy = b / n
-    ht = 0.1
     u0 = np.zeros((n + 1, n + 1))
     u1 = np.zeros((n + 1, n + 1))
     for i in range(1, n):
@@ -85,16 +85,17 @@ def task(n, f, phi, ksi, filename, _a=2, _b=2):
     ani.save(filename + '.gif', writer='imagemagick', fps=fps)
 
 
-def check_error(n, f, phi, ksi, filename, _a=2, _b=2):
+def check_error(n, _ht, f, phi, ksi, filename, _a=2, _b=2):
     def lambd(n, m):
         return np.pi ** 2 * (n * n + m * m) / 4
     def my_u(x, y, t):
-        return phi(x, y) * np.cos(np.sqrt(lambd(1, 2)) * t)
-    fps = 10  # frame per sec
-    frn = 62  # frame number of the animation
+        return phi(x, y) * np.cos(2 * t)
+    fps = 30  # frame per sec
+    frn = 240  # frame number of the animation
     global hx, hy, ht, a, b
     a = _a
     b = _b
+    ht = _ht
 
     def update_plot(frame_number, zarray, plot):
         plot[0].remove()
@@ -106,7 +107,6 @@ def check_error(n, f, phi, ksi, filename, _a=2, _b=2):
 
     hx = a / n
     hy = b / n
-    ht = 0.1
     u0 = np.zeros((n + 1, n + 1))
     u1 = np.zeros((n + 1, n + 1))
     for i in range(1, n):
@@ -138,8 +138,8 @@ def check_error(n, f, phi, ksi, filename, _a=2, _b=2):
     ax.text(0, 0, 11, s='t = [0, 6)')
 
     plot = [ax.plot_surface(x, y, zarray[:, :, 0], color='0.75', rstride=1, cstride=1)]
-    ax.set_zlim(0, 1)
+    ax.set_zlim(0, 0.2)
     ani = FuncAnimation(fig, update_plot, frn, fargs=(zarray, plot), interval=1000 / fps)
     print("Сохранение графика")
-    ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
+    # ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
     ani.save(filename + '.gif', writer='imagemagick', fps=fps)
