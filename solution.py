@@ -37,8 +37,8 @@ def show_plot(u_numeric):
 
 
 def task(n, _ht, f, phi, ksi, filename, _a=2, _b=2):
-    fps = 30  # frame per sec
-    frn = 120  # frame number of the animation
+    fps = int(1/_ht)  # frame per sec
+    frn = int(6.2 * fps)  # frame number of the animation
     global hx, hy, ht, a, b
     a = _a
     b = _b
@@ -81,17 +81,15 @@ def task(n, _ht, f, phi, ksi, filename, _a=2, _b=2):
     plot = [ax.plot_surface(x, y, zarray[:, :, 0], color='0.75', rstride=1, cstride=1)]
     ax.set_zlim(0, 2)
     ani = FuncAnimation(fig, update_plot, frn, fargs=(zarray, plot), interval=1000 / fps)
-    # ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
+    ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
     ani.save(filename + '.gif', writer='imagemagick', fps=fps)
 
 
 def check_error(n, _ht, f, phi, ksi, filename, _a=2, _b=2):
-    def lambd(n, m):
-        return np.pi ** 2 * (n * n + m * m) / 4
     def my_u(x, y, t):
         return phi(x, y) * np.cos(2 * t)
-    fps = 30  # frame per sec
-    frn = 240  # frame number of the animation
+    fps = 1/_ht  # frame per sec
+    frn = int(6.2 * fps)  # frame number of the animation
     global hx, hy, ht, a, b
     a = _a
     b = _b
@@ -141,5 +139,5 @@ def check_error(n, _ht, f, phi, ksi, filename, _a=2, _b=2):
     ax.set_zlim(0, 0.2)
     ani = FuncAnimation(fig, update_plot, frn, fargs=(zarray, plot), interval=1000 / fps)
     print("Сохранение графика")
-    # ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
+    ani.save(filename + '.mp4', writer='ffmpeg', fps=fps)
     ani.save(filename + '.gif', writer='imagemagick', fps=fps)

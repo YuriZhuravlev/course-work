@@ -42,7 +42,7 @@ def u_elementary(x, y, t, n, m):
 
 
 def my_u(x, y, t):
-    return phi(x, y) * np.cos(np.sqrt(lambd(1, 2)) * t)
+    return phi(x, y) * np.cos(2 * t)
 
 
 def u(x, y, t, M=100, N=100):
@@ -83,6 +83,6 @@ plot = [ax.plot_surface(x, y, zarray[:, :, 0], color='0.75', rstride=1, cstride=
 ax.set_zlim(0, 2)
 ani = FuncAnimation(fig, update_plot, frn, fargs=(zarray, plot), interval=1000 / fps)
 print(time.time() - time0)
-fn = 'resources/myplotTest'
+fn = 'resources/analyticSolve'
 ani.save(fn + '.mp4', writer='ffmpeg', fps=fps)
 ani.save(fn + '.gif', writer='imagemagick', fps=fps)
